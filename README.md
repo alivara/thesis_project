@@ -84,4 +84,3 @@ Overall, threads are a fundamental part of your application, enabling it to effi
 
 The code contains several configuration options and functionality related to capturing, processing, and analyzing data from a camera system. Some parts of the code are specific to your project, and additional documentation or comments within the code may be required for a better understanding of the implementation.
 
-Please make sure to adapt the code and configuration to your specific use case and project requirements. Feel free to update this README with more detailed instructions as needed.
