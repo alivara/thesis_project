@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+<script src="{{ url_for('static', filename='js/monitoring.js') }}"></script>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Preview</h6>
+    </div>
+    <div class="card-body">
+        <img src="{{ url_for('video_feed') }}" class="mb-3" width="100%">
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row mb-3 mt-2">
+            <label for="monitor-status-tt" class="col-3 col-form-label font-weight-bold text-primary"><strong>Monitoring Status:</strong></label>
+            <div class="col-6">
+                <div id="monitor-stat" class="form-control text-center">
+                    <p id="monitor-status-bar" class="mb-0">Monitoring Status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <form class="form-ajax" id="frmMonitor" action="{{ url_for('start_monitoring') }}" method="post">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <span class="text text-uppercase">Start Monitoring</span>
+                    </button>
+                    <!-- <div id="monitor-status-bar" class="form-results-text alert alert-info"></div> -->
+                </form>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4">
+                <form class="form-ajax" id="stopMonitor" action="{{ url_for('stop_monitoring') }}" method="post">
+                    <button type="submit" class="btn btn-danger w-100">
+                        <span class="text text-uppercase">Stop Monitoring</span>
+                    </button>
+                    <!-- <div id="stop-monitor-status" class="form-results-text alert alert-info"></div> -->
+                </form>
+            </div>
+        </div>
+        <div id="bumps-result" class="card card-body d-none">
+            <div id="bumps-description"></div>
+            <div class="form-results-img">
+                <img src="about:blank" width="100%">
+            </div>
+        </div>
+        <div id="shifting-result" class="card card-body mt-3 d-none">
+            <div id="shifting-description"></div>
+            <div class="form-results-img">
+                <img src="about:blank" width="100%">
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+{% endblock content %}

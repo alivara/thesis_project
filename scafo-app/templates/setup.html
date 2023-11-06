@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="{{ url_for('static', filename='js/setup.js') }}"></script>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">1. Positioning</h6>
+    </div>
+    <div class="card-body">
+        Place the pattern projector 4 meters away from the metal plate.
+        <br />
+        Place the camera 2 meters on the right of the projector at a 45° angle as shown below:
+        <img class="my-3" src="{{ url_for('static', filename='img/camera-position.png') }}" />
+        <br/>Do not move the devices during the setup and monitoring phases.
+    </div>
+</div>
+
+<!-- Second step  -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">2. ROI</h6>
+    </div>
+    <div class="card-body">
+        <img src="{{ url_for('video_feed') }}" class="mb-3" width="100%">
+        <div class="form-text">
+            Turn on the Dipoles.    
+        </div>
+        Push the button to detect the ROI and Focus camera.
+        <form class="form-ajax" action="{{ url_for('detect_roi') }}" method="post">
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+                <span class="text text-uppercase">Detect Dipoles and Focus</span>
+            </button>
+            {% if exp_time %}
+            <label for="exp_t" class="form-label">Exposure Time</label>
+            <div class="d-flex justify-content-between">
+                <div class="col-11 p-0"><input type="range" id="exp_t" name="exp_t" class="form-range" min="10000" max="60000" step="5000" value=exp_val></div>
+                <div class="p-0 text-primary"><span id="exp_t-label">0</span></div>
+            </div>
+            <div class="form-text">Please adjust the ExposureTime value to accurately 
+                detect LEDs of dipoles.(Wait till result shows under the key)
+            </div>
+            {% endif %}
+            <div class="form-results-img">
+                <img src="about:blank" width="100%" >
+            </div>
+            <!-- <div class="form-results-img">
+                <img id="result-img" src="about:blank" width="100%">
+            </div>
+            <div class="form-results-text alert alert-info"></div> -->
+        </form>
+    </div>
+    <div class="card-body">
+        <form class="form-ajax" action="{{ url_for('detect_dipole') }}" method="post">
+            <div class="mb-3">
+                <label for="n_dipole" class="form-label">Number of Dipole used</label>
+                <div class="d-flex justify-content-between">
+                    <div class="col-11 p-0"><input type="range" id="n_dipole" name="n_dipole" class="form-range" min="0" max="25" step="1" value="0"></div>
+                    <div class="p-0 text-primary"><span id="n_dipole-label">0</span></div>
+                </div>
+                <!-- <div class="form-text">Please adjust the threshold value to accurately 
+                    detect the exact number of dipoles. You can verify the number of 
+                    dipoles by comparing it with the numerical value displayed beneath 
+                    the resulting images.
+                </div> -->
+            </div>
+            <div class="form-results-img">
+                <div class="d-flex justify-content-between"> 
+                    <img src="about:blank" width="48%">
+                    <img src="about:blank" width="48%">
+                </div>
+            </div>
+            <div class="form-results-text alert alert-info"></div>
+        </form>
+    </div>
+</div>
+
+{% if mosaico %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">3. Mosaico Configuration</h6>
+    </div>
+    <div class="card-body">
+        <!-- part of auto focusing Mosaico -->
+        <form class="form-ajax" action="{{ url_for('project_pattern') }}" method="post">
+            <div class="mb-3">
+                <fieldset>
+                    <input type="radio" id="Config-1" name="Config" value="K">
+                    <label for="Config-1">Config-1</label><br>
+                
+                    <input type="radio" id="Config-2" name="Config" value="S">
+                    <label for="Config-2">Config-2</label><br>
+                
+                    <input type="radio" id="Config-3" name="Config" value="M" />
+                    <label for="Config-3">Config-3</label>
+                </fieldset>
+                <label for="br" class="form-label">Brightness: <span id="br-label">0</span></label>
+                <div class="d-flex justify-content-between">
+                    <input type='button' value='-' class='btn btn-primary qtyminus' field='br' />
+                    <div class="col-11 p-0"><input type="range" id="br" name="br" class="form-control qty" min="0" max="220"
+                         step="1" value="0"></div>
+                    <input type='button' value='+' class='btn btn-primary qtyplus' field='br' />
+                </div>
+                <label for="ro" class="form-label">Rotation: <span id="ro-label">0</span></label>
+                <div class="d-flex justify-content-between">
+                    <input type='button' value='-' class='btn btn-primary qtyminus' field='ro' />
+                    <div class="col-11 p-0"><input type="range" id="ro" name="ro" class="form-control qty" min="0" max="200"
+                            step="1" value="0"></div>
+                    <input type='button' value='+' class='btn btn-primary qtyplus' field='ro' />
+                </div>
+                <label for="fo" class="form-label">Focus: <span id="fo-label">0</span></label>
+                <div class="d-flex justify-content-between">
+                    <input type='button' value='-' class='btn btn-primary qtyminus' field='fo' />
+                    <div class="col-11 p-0"><input type="range" id="fo" name="fo" class="form-control qty" min="0" max="200"
+                            step="1" value="0"></div>
+                    <input type='button' value='+' class='btn btn-primary qtyplus' field='fo' />
+                </div>
+                <label for="zo" class="form-label">Zoom: <span id="zo-label">0</span></label>
+                <div class="d-flex justify-content-between">
+                    <input type='button' value='-' class='btn btn-primary qtyminus' field='zo' />
+                    <div class="col-11 p-0"><input type="range" id="zo" name="zo" class="form-control qty" min="0" max="200"
+                            step="1" value="0"></div>
+                    <input type='button' value='+' class='btn btn-primary qtyplus' field='zo' />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">3. Mosaico Configuration</h6>
+    </div>
+    <div class="card-body">
+        <!-- part of auto focusing Mosaico -->
+        configure the musico manuali...
+    </div>
+</div>
+{% endif %}
+<!-- Third part for Capture refrence points -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">4. Capture Capture Baseline</h6>
+    </div>
+    <div class="card-body">
+        <form class="form-ajax" action="{{ url_for('capture_baseline') }}" method="post">
+            Place The Green LEDs, then capture the baseline image. 
+            <button type="submit" class="btn btn-primary w-100">
+                <span class="text text-uppercase">Capture Baseline Image</span>
+            </button>
+            <div class="form-results-img">
+                <img src="about:blank" width="100%">
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">4. Noise Evaluation</h6>
+    </div>
+    <div class="card-body">
+        <form class="form-ajax" action="{{ url_for('noise_evaluation') }}" method="post">
+            <button type="submit" class="btn btn-primary w-100">
+                <span class="text text-uppercase">Evaluate T</span>
+            </button>
+            <div class="form-results-img">
+                <img src="about:blank" width="100%">
+            </div>
+        </form>
+
+        <form class="form-ajax" action="{{ url_for('store_T') }}" method="post">
+            <div class="mb-3 mt-3">
+                <label for="T" class="col-form-label">Noise Threshold</label>
+                <input type="text" id="T" name="T" class="form-control" value="0">
+                <div class="form-text">Choose the value of <b>x</b> where <b>y = 0</b></div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                <span class="text text-uppercase">Store Threshold</span>
+            </button>
+            <div class=" form-results-text alert alert-info"></div>
+        </form>
+    </div>
+</div> -->
+
+{% endblock content %}

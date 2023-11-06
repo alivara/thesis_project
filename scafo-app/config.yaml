@@ -1,0 +1,64 @@
+# main configuaration for Scafo4.0
+
+Flask:
+  path: '/static'
+  secret_key: b'_5#y2L"F4Q8z\n\xec]/'
+  host: '192.168.1.103'
+  port: '5000'
+  debug_mode: True
+  sessionid: None
+
+Camera:
+  ExposureTime:
+    change: False
+    value: 20000
+
+Deformation:
+  ROI:
+    increase_pixel: 200
+    
+  kmean:
+    num_cluster: 10
+  
+  Jaccard:
+    threshold: 0.001
+
+  Dipole:
+    threshold: 1
+    percentile_threshold: 0.3
+    thresh_multiplier: 0.8 
+    # 0.7
+Mosaico: True
+
+FTP:
+  ftp_host: "192.168.4.1"
+  ftp_port: 21
+  ftp_user: "admin"
+  ftp_pass: "password"
+  permision_path: '/shares/U/Palermo_SIIT_test/'
+
+MQTT:
+  MQMES_server_address: '213.215.190.153'
+  MQMES_server_port: 1884
+  MQMES_username: 'vrlabs'
+  MQMES_password: 'Scafo_VR_665Cq'
+  MQMES_client_id: 'dev000'
+  MQMES_client_id_MS: 'dev001'
+
+Sen:
+  MAC: "00:0C:BF:0B:73:1A"
+# {'sensorID': 'dev000', 
+# 'timestamp': 1689757442, 
+# 'status': '1', 
+# 'comment': '... eventuali commenti ...', 
+# 'shifting_results': {'threshold': 10, 
+#                       'status': '0', 
+#                       'Dipole_base_info': 
+#                               {1: ((172, 139), (118, 102), 65.45991139621256), 
+#                               2: ((580, 158), (621, 110), 63.12685640834652), 
+#                               3: ((144, 500), (110, 530), 45.34313619501854), 
+#                               4: ((613, 518), (630, 566), 50.92150822589606)}}, 
+#                       'ROI': [{'top_left': array([2753, 3318]), 
+#                               'top_right': array([3434, 3334]), 
+#                               'down_left': array([3444, 3997]), 
+#                               'down_right': array([2714, 3948])}]}
